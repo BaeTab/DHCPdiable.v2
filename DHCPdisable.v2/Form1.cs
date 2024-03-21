@@ -19,7 +19,7 @@ namespace DHCPdisable.v2
             button3.Click += Button3_Click; // 재부팅
         }
 
-        private void currentStatus()
+        private void currentStatus()        // 현재 상태 체크하고 변경이 필요한경우 변경한다
         {
             try
             {
@@ -40,6 +40,9 @@ namespace DHCPdisable.v2
                         {
                             key.SetValue("IPAutoconfigurationEnabled", 0, RegistryValueKind.DWord);
                             textBox1.AppendText("*APIPA 설정을 비활성화 했습니다\r\n");
+                            button3.Enabled = true;
+                            label1.Visible = true;
+                            label1.Text = "재부팅 필요";
                         }
                     }
                     // IPAutoconfigurationEnabled 키값이 없는 경우 0의 값으로 생성한다
@@ -47,6 +50,9 @@ namespace DHCPdisable.v2
                     {
                         key.SetValue("IPAutoconfigurationEnabled", 0, RegistryValueKind.DWord);
                         textBox1.AppendText("*APIPA 설정을 비활성화 했습니다\r\n");
+                        button3.Enabled = true;
+                        label1.Visible = true;
+                        label1.Text = "재부팅 필요";
                     }
                 }
                 using (RegistryKey key = Registry.LocalMachine.CreateSubKey(@"SYSTEM\CurrentControlSet\Services\Dhcp"))
@@ -62,14 +68,26 @@ namespace DHCPdisable.v2
                         {
                             key.SetValue("Start", 4, RegistryValueKind.DWord);
                             textBox1.AppendText("*DHCP Client 서비스를 비활성화 했습니다\r\n*재부팅이 필요합니다");
-                            button3.Enabled = true;
+                            // APIPA 비활성화로 버튼3이 활성화 되었으면 딱히 다시 활성화 할 필요가 없어 조건문 추가
+                            if (button3.Enabled == false)
+                            {
+                                button3.Enabled = true;
+                                label1.Visible = true;
+                                label1.Text = "재부팅 필요";
+                            }
                         }
                     }
                     else
                     {
                         key.SetValue("Start", 4, RegistryValueKind.DWord);
                         textBox1.AppendText("*DHCP Client 서비스를 비활성화 했습니다\r\n*재부팅이 필요합니다");
-                        button3.Enabled = true;
+                        // APIPA 비활성화로 버튼3이 활성화 되었으면 딱히 다시 활성화 할 필요가 없어 조건문 추가
+                        if (button3.Enabled == false)
+                        {
+                            button3.Enabled = true;
+                            label1.Visible = true;
+                            label1.Text = "재부팅 필요";
+                        }
                     }
                 }
                 return;
