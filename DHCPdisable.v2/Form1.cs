@@ -16,26 +16,27 @@ namespace DHCPdisable.v2
 
         private void eventHandler()
         {
-            button3.Click += Button3_Click; // 재부팅
+            button3.Click += Button3_Click; // 재부팅 버튼
         }
 
-        private void currentStatus()        // 현재 상태 체크하고 변경이 필요한경우 변경한다
+        private void currentStatus()        // 현재 상태 체크하고 변경이 필요한경우 키값 변경
         {
             try
             {
-                // 레지스트리 키가 없을 경우 CreateSubKey 를 사용해야한다
+                // 레지스트리 키가 없을 경우 CreateSubKey 를 사용해서 새 키를 만들어줘야 한다
                 using (RegistryKey key = Registry.LocalMachine.CreateSubKey(@"SYSTEM\CurrentControlSet\Services\Tcpip\Parameters"))
                 {
-                    var value = key.GetValue("IPAutoconfigurationEnabled");
-                    // IPAutoconfigurationEnabled 키값이 이미 있는경우
-                    if (null != value)
+                    // IPAutoconfigurationEnabled 키가 없는 경우 null 이 나오고 있을경우 GetValue 를 통해 값이 몇인지 나온다
+                    var value = key.GetValue("IPAutoconfigurationEnabled");     
+                    // value 가 null 이 아니면 키가 존재한다
+                    if (null != value) 
                     {
                         // IPAutoconfigurationEnabled 키값이 0인경우는 이미 비활성화 이다
                         if (0 == (int)value)
                         {
                             textBox1.AppendText("*APIPA 설정이 비활성화 되어 있습니다\r\n");
                         }
-                        // 키값의 설정이 다른경우 설정해준다
+                        // 키값의 설정이 다른경우 0으로 설정해준다
                         else
                         {
                             key.SetValue("IPAutoconfigurationEnabled", 0, RegistryValueKind.DWord);
@@ -109,7 +110,7 @@ namespace DHCPdisable.v2
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"오류: {ex.Message}");
+                MessageBox.Show($"오류: {ex.Message}","오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
     }
