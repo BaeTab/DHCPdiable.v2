@@ -44,7 +44,7 @@
     <SignManifests>false</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>database_13739420.ico</ApplicationIcon>
+    <ApplicationIcon>internet_1554349.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -93,6 +93,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="database_13739420.ico" />
+    <Content Include="internet_1554349.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
